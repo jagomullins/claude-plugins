@@ -1,0 +1,534 @@
+<title>{{HOUSEHOLD}} House Record</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,300;0,400;0,500;1,300&family=Karla:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F7F2E9; --surface:#FFFCF6; --sunk:#EFE6D7; --raise:#FBF6EE;
+  --ink:#2A1F18; --muted:#6B5B4C; --faint:#786755; --line:#E3D8C6; --line-soft:#EEE5D6;
+  --accent:#9E5B39; --accent-ink:#FFF8F1; --accent-soft:#F3E3D6;
+  --ok:#47603D; --ok-soft:#E6EDDF; --warn:#7E5813; --warn-soft:#F5E9D2; --crit:#9C3B2B; --crit-soft:#F6E1DA;
+  --display:"Petrona", Georgia, "Times New Roman", serif;
+  --body:"Karla", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --shadow:0 1px 2px rgba(42,31,24,.04), 0 8px 24px -16px rgba(42,31,24,.16);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#1A1512; --surface:#231D18; --sunk:#2E2620; --raise:#282119;
+    --ink:#F2EAE0; --muted:#B3A392; --faint:#9A8878; --line:#362D25; --line-soft:#2C2520;
+    --accent:#D4906A; --accent-ink:#1A1512; --accent-soft:#35251C;
+    --ok:#9DB88B; --ok-soft:#1F2A1C; --warn:#DFAC62; --warn-soft:#332818; --crit:#E08D7C; --crit-soft:#361F1A;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#1A1512; --surface:#231D18; --sunk:#2E2620; --raise:#282119;
+  --ink:#F2EAE0; --muted:#B3A392; --faint:#9A8878; --line:#362D25; --line-soft:#2C2520;
+  --accent:#D4906A; --accent-ink:#1A1512; --accent-soft:#35251C;
+  --ok:#9DB88B; --ok-soft:#1F2A1C; --warn:#DFAC62; --warn-soft:#332818; --crit:#E08D7C; --crit-soft:#361F1A;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.62;letter-spacing:.002em;padding-inline:20px;padding-block:28px 72px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:30px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:400}
+h1{font-size:clamp(32px,8.5vw,46px);font-weight:300;letter-spacing:-.018em;line-height:1.08}
+h2{font-size:clamp(22px,4.4vw,27px);font-weight:300;letter-spacing:-.012em}
+h3{font-size:18px;font-weight:400;letter-spacing:-.008em}
+.eyebrow{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.lede{font-family:var(--display);font-size:17.5px;font-style:italic;font-weight:300;color:var(--muted);max-width:44ch;margin:0}
+.muted{color:var(--muted)}
+.mono{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:1.5px solid var(--accent);outline-offset:3px}
+hr.rule{border:0;border-top:1px solid var(--line);margin:0}
+
+header.top{display:flex;flex-direction:column;gap:22px}
+.title-row{display:flex;flex-direction:column;gap:6px}
+.addr{font-size:13px;letter-spacing:.02em;color:var(--muted)}
+.meters{display:flex;gap:26px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--line)}
+.meter{display:flex;flex-direction:column;gap:1px}
+.meter b{font-family:var(--display);font-size:27px;font-weight:300;font-variant-numeric:tabular-nums;line-height:1.1}
+.meter span{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);font-weight:600}
+
+.capture{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:8px 8px 8px 18px;box-shadow:var(--shadow)}
+.capture input{flex:1 1 240px;min-width:0;border:0;background:transparent;padding:9px 0;font-size:15.5px}
+.capture input::placeholder{color:var(--faint)}
+.capture input:focus{outline:none}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 18px;font-weight:500;font-size:14px;transition:background .15s ease,border-color .15s ease}
+.btn:hover{background:var(--sunk)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted);padding-inline:10px}
+.btn.ghost:hover{color:var(--ink);background:var(--sunk)}
+.btn.small{padding:6px 14px;font-size:13px}
+
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);margin-inline:-4px;padding-inline:4px}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{border:0;background:none;padding:11px 14px 13px;font-weight:500;font-size:14.5px;color:var(--muted);white-space:nowrap;display:flex;gap:7px;align-items:center;position:relative}
+nav.tabs button::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:1.5px;background:transparent}
+nav.tabs button[aria-selected="true"]{color:var(--ink)}
+nav.tabs button[aria-selected="true"]::after{background:var(--accent)}
+.count{font-size:11px;font-variant-numeric:tabular-nums;background:var(--sunk);color:var(--muted);border-radius:999px;padding:2px 8px;font-weight:600}
+nav.tabs button[aria-selected="true"] .count{background:var(--accent-soft);color:var(--accent)}
+
+.status-line{font-size:13.5px;color:var(--muted);min-height:1.2em;font-style:italic}
+.status-line.err{color:var(--crit);font-style:normal}
+
+.section{display:flex;flex-direction:column;gap:16px}
+.section+.section{margin-top:34px}
+.section-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap}
+.intro{max-width:62ch;color:var(--muted);margin:0;font-size:14.5px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+
+/* Today */
+.today{display:flex;flex-direction:column;gap:8px}
+.today .date{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.attention{background:var(--accent-soft);border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:6px}
+.attention .n{font-family:var(--display);font-size:30px;font-weight:300;line-height:1}
+.lanes{display:flex;flex-direction:column;gap:26px}
+.lane{display:flex;flex-direction:column;gap:2px}
+.lane-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.lane-head .l{font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.lane.now .lane-head .l{color:var(--crit)}
+.item{display:flex;flex-direction:column;gap:2px;padding:13px 0;border-bottom:1px solid var(--line-soft)}
+.item:last-child{border-bottom:0}
+.item .t{font-weight:500}
+.item .s{font-size:13.5px;color:var(--muted)}
+.empty{font-size:14px;color:var(--faint);font-style:italic;padding:12px 0}
+.overdue{color:var(--crit)}
+
+/* Questions */
+.qgroup{display:flex;flex-direction:column;gap:14px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:13px;box-shadow:var(--shadow)}
+.q-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.q-text{font-family:var(--display);font-size:19.5px;font-weight:400;letter-spacing:-.008em;line-height:1.3}
+.q-why{font-size:13.5px;color:var(--muted);max-width:56ch}
+.q textarea{width:100%;min-height:82px;resize:vertical;border:1px solid var(--line);border-radius:12px;background:var(--raise);padding:12px 14px;font-size:15px;line-height:1.55}
+.q textarea::placeholder{color:var(--faint)}
+.q-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.q.done{background:transparent;box-shadow:none;border-color:var(--line-soft);padding:18px 22px}
+.q.done .q-text{font-size:16.5px}
+.q.done .q-answer{white-space:pre-wrap;border-left:1.5px solid var(--accent);padding-left:14px;color:var(--muted);font-size:14.5px}
+.tag{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;border-radius:999px;padding:4px 10px;white-space:nowrap;background:var(--sunk);color:var(--muted)}
+.tag.ok{background:var(--ok-soft);color:var(--ok)}
+.tag.warn{background:var(--warn-soft);color:var(--warn)}
+.tag.crit{background:var(--crit-soft);color:var(--crit)}
+.tag.acc{background:var(--accent-soft);color:var(--accent)}
+details.more{border-top:1px solid var(--line);padding-top:6px}
+details.more summary{cursor:pointer;color:var(--muted);font-size:14px;padding:10px 0;letter-spacing:.01em}
+details.more[open] summary{margin-bottom:10px}
+
+/* Memory */
+.cats{display:flex;gap:7px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:7px 15px;font-size:13.5px;display:flex;gap:7px;align-items:center;color:var(--muted)}
+.chip:hover{background:var(--sunk)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.chip[aria-pressed="true"] .count{background:transparent;color:inherit;opacity:.75}
+.records{display:grid;grid-template-columns:1fr;gap:14px}
+@media (min-width:700px){.records{grid-template-columns:1fr 1fr}}
+.rec{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.rec-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.rec-title{font-family:var(--display);font-size:19px;font-weight:400;letter-spacing:-.008em;line-height:1.25;margin-top:3px}
+dl.kv{display:grid;grid-template-columns:minmax(92px,36%) 1fr;gap:0 16px;margin:0;font-size:14px}
+dl.kv dt{color:var(--faint);padding:6px 0;border-top:1px solid var(--line-soft);font-size:13px}
+dl.kv dd{margin:0;padding:6px 0;border-top:1px solid var(--line-soft);overflow-wrap:anywhere;white-space:pre-wrap}
+dl.kv dt:first-of-type,dl.kv dd:first-of-type{border-top:0;padding-top:0}
+dd.unknown{color:var(--faint);font-style:italic}
+.rec-docs{display:flex;gap:7px;flex-wrap:wrap}
+.doclink{font-size:12.5px;color:var(--accent);text-decoration:none;border:1px solid var(--accent-soft);background:var(--accent-soft);border-radius:999px;padding:4px 12px}
+.doclink:hover{filter:brightness(.97)}
+.rec-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:2px}
+.rec-foot .eyebrow{color:var(--faint)}
+
+/* Form */
+.editor{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:560px){.editor{grid-template-columns:1fr 1fr}}
+.editor label{display:flex;flex-direction:column;gap:5px;font-size:11px;letter-spacing:.11em;text-transform:uppercase;font-weight:600;color:var(--faint)}
+.editor label.full{grid-column:1/-1}
+.editor input,.editor textarea,.editor select{border:1px solid var(--line);border-radius:10px;background:var(--raise);padding:9px 12px;font-size:14.5px;letter-spacing:normal;text-transform:none;font-weight:400;color:var(--ink);width:100%}
+.editor textarea{min-height:70px;resize:vertical;line-height:1.55}
+
+/* Docs */
+.drop{border:1px dashed var(--line);border-radius:16px;padding:26px 22px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;background:var(--surface)}
+.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop strong{font-family:var(--display);font-size:20px;font-weight:400}
+.drop-row{display:flex;gap:10px;flex-wrap:wrap;width:100%}
+.drop-row input[type=text]{flex:1 1 240px;min-width:0;border:1px solid var(--line);border-radius:10px;background:var(--raise);padding:10px 14px;font-size:14.5px}
+.table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:13px 18px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:600}
+tr:last-child td{border-bottom:0}
+td a{color:var(--accent)}
+
+.inbox{display:flex;flex-direction:column;gap:0}
+.inbox-row{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;font-size:14.5px;padding:15px 0;border-bottom:1px solid var(--line-soft)}
+.inbox-row:last-child{border-bottom:0}
+
+.banner{background:var(--warn-soft);color:var(--warn);border-radius:12px;padding:13px 18px;font-size:14px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="title-row">
+      <div class="eyebrow">House Memory &amp; Home Care</div>
+      <h1>{{HOUSEHOLD}} House Record</h1>
+      <div class="addr" id="addr">Address not yet recorded</div>
+    </div>
+    <div class="meters" id="meters"></div>
+  </header>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <form class="capture" id="captureForm" autocomplete="off">
+    <input id="captureInput" type="text" placeholder="Tell the house manager anything…" aria-label="Quick note for the house manager">
+    <button class="btn primary" type="submit">Add note</button>
+  </form>
+  <div class="status-line" id="status" role="status" aria-live="polite"></div>
+
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+  <main id="view"></main>
+</div>
+
+<script>
+(function(){
+  const KINDS = {
+    system:{label:"Major Systems", one:"System", fields:[
+      ["manufacturer","Manufacturer"],["model","Model"],["serial","Serial #"],["installed","Installed / replaced","date"],
+      ["provider","Service provider"],["lastService","Last service","date"],["frequency","Service frequency"],
+      ["nextDue","Next service due","date"],["warrantyEnd","Warranty ends","date"],["notes","Notes","area"]]},
+    appliance:{label:"Appliances & Equipment", one:"Appliance", fields:[
+      ["manufacturer","Manufacturer"],["model","Model"],["serial","Serial #"],["installed","Installed / purchased","date"],
+      ["vendor","Bought from"],["cost","Cost"],["warrantyEnd","Warranty ends","date"],["provider","Service provider"],["notes","Notes","area"]]},
+    improvement:{label:"Home Improvements", one:"Improvement", fields:[
+      ["date","Completed","date"],["why","Why it was done","area"],["contractor","Contractor"],["contact","Contact person"],
+      ["cost","Cost"],["materials","Materials / products","area"],["warrantyEnd","Warranty ends","date"],
+      ["upkeep","Maintenance needed","area"],["notes","Notes","area"]]},
+    maintenance:{label:"Maintenance History", one:"Service event", fields:[
+      ["date","Date","date"],["system","System"],["work","Work performed","area"],["provider","Provider"],["contact","Contact person"],
+      ["cost","Cost"],["findings","Findings / recommendations","area"],["nextDue","Next service due","date"],["notes","Notes","area"]]},
+    contractor:{label:"Contractors & Providers", one:"Provider", fields:[
+      ["service","Service"],["relationship","Relationship","select",["Current provider","Former provider","One-time","Project-specific"]],
+      ["contact","Contact person"],["phone","Phone"],["email","Email"],["website","Website"],["frequency","Frequency"],
+      ["lastVisit","Last visit","date"],["cost","Cost / rate"],["payment","Payment schedule"],["nextVisit","Next visit","date"],["notes","Notes","area"]]},
+    warranty:{label:"Warranties", one:"Warranty", fields:[
+      ["product","Product / project"],["manufacturer","Manufacturer"],["installer","Installer"],["contact","Contact person"],
+      ["phone","Contact info"],["start","Warranty start","date"],["warrantyEnd","Warranty ends","date"],
+      ["coverage","Coverage","area"],["claims","Claim history","area"],["notes","Notes","area"]]},
+    knowledge:{label:"Property Knowledge", one:"Fact", fields:[["topic","Topic"],["detail","Detail","area"]]},
+    task:{label:"Open Tasks", one:"Task", fields:[
+      ["due","Due","date"],["status","Status","select",["Open","Scheduled","Waiting","Done"]],
+      ["priority","Priority","select",["Normal","High","Low"]],["recurring","Repeats"],["notes","Notes","area"]]}
+  };
+  const TABS = [["today","Today"],["questions","Questions"],["memory","House Memory"],["docs","Documents"],["inbox","Notes"]];
+
+  const S = {questions:[],records:[],documents:[],captures:[],property:null,ready:false};
+  let db=null, assets=null, tab="today", memCat="all", editing=null, pendingRender=false, busy=false;
+  try{ tab = localStorage.getItem("hr.tab2") || "today"; memCat = localStorage.getItem("hr.cat") || "all"; }catch(e){}
+  if(!TABS.some(t=>t[0]===tab)) tab="today";
+
+  const $ = s=>document.querySelector(s);
+  const esc = v=>String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const today = ()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+  const parseD = s=>{ if(!s||!/^\d{4}-\d{2}-\d{2}$/.test(s)) return null; const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); };
+  const fmtD = s=>{ const d=parseD(s); return d? d.toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"}) : (s||""); };
+  const daysUntil = s=>{ const d=parseD(s); return d? Math.round((d-today())/864e5) : null; };
+  const nowISO = ()=>new Date().toISOString();
+
+  function setStatus(msg, err){ const el=$("#status"); el.textContent=msg||""; el.classList.toggle("err",!!err); if(msg&&!err) setTimeout(()=>{ if(el.textContent===msg) el.textContent=""; },3500); }
+
+  function missingCount(r){
+    const k=KINDS[r.kind]; if(!k) return 0;
+    return k.fields.filter(f=>f[0]!=="notes" && f[0]!=="claims" && !String(r[f[0]]||"").trim()).length;
+  }
+
+  /* ---------- rendering ---------- */
+  function render(){
+    const ae=document.activeElement;
+    if(ae && $("#view").contains(ae) && /^(TEXTAREA|INPUT|SELECT)$/.test(ae.tagName)){ pendingRender=true; renderChrome(); return; }
+    pendingRender=false; renderChrome();
+    const v=$("#view");
+    if(!S.ready){ v.innerHTML='<p class="empty">Opening the house record…</p>'; return; }
+    v.innerHTML = ({today:viewToday,questions:viewQuestions,memory:viewMemory,docs:viewDocs,inbox:viewInbox}[tab])();
+  }
+  document.addEventListener("focusout",()=>setTimeout(()=>{ if(pendingRender) render(); },0));
+
+  function renderChrome(){
+    const p=S.property||{};
+    $("#addr").textContent = p.address ? p.address + (p.yearBuilt? " · built "+p.yearBuilt:"") : "Address not yet recorded";
+    const openQ=S.questions.filter(q=>q.status==="open").length;
+    const answered=S.questions.filter(q=>q.status!=="open").length;
+    const recs=S.records.filter(r=>r.kind!=="task").length;
+    const gaps=S.records.reduce((a,r)=>a+missingCount(r),0);
+    $("#meters").innerHTML = [
+      [answered+"/"+S.questions.length,"answered"],[recs,"records"],[S.documents.length,"documents"],[gaps,"still unknown"]
+    ].map(m=>`<div class="meter"><b>${esc(m[0])}</b><span>${esc(m[1])}</span></div>`).join("");
+    const counts={questions:openQ||"", today:opsItems().filter(i=>i.lane==="now").length||"", memory:recs||"", docs:S.documents.length||"", inbox:S.captures.filter(c=>c.status!=="filed").length||""};
+    $("#tabs").innerHTML = TABS.map(([id,l])=>`<button role="tab" data-tab="${id}" aria-selected="${tab===id}">${esc(l)}${counts[id]?`<span class="count">${counts[id]}</span>`:""}</button>`).join("");
+  }
+
+  /* ---------- Today ---------- */
+  function opsItems(){
+    const items=[];
+    const push=(title,sub,due,kind,alwaysNow)=>{
+      const n=due?daysUntil(due):null; let lane="ongoing";
+      if(alwaysNow || (n!=null && n<=0)) lane="now"; else if(n!=null && n<=7) lane="week"; else if(n!=null && n<=31) lane="month"; else if(n!=null) lane="upcoming";
+      items.push({title,sub,due,n,lane,kind});
+    };
+    S.records.forEach(r=>{
+      if(r.kind==="task"){ if(r.status==="Done") return; push(r.title, [r.priority==="High"?"High priority":"", r.recurring?"Repeats "+r.recurring:"", r.notes||""].filter(Boolean).join(" · "), r.due, "task", r.priority==="High"&&!r.due); return; }
+      if(r.nextDue) push(r.title+" — service", r.provider?("Provider: "+r.provider):"Maintenance due", r.nextDue, "maint");
+      if(r.nextVisit) push(r.title+" visit", r.service||"Scheduled visit", r.nextVisit, "visit");
+      if(r.warrantyEnd){ const n=daysUntil(r.warrantyEnd); if(n!=null && n<=120) push(r.title+" warranty "+(n<0?"expired":"ends"), "Check coverage before it lapses", r.warrantyEnd, "warranty", n<=30); }
+    });
+    return items.sort((a,b)=>(a.n==null?1e9:a.n)-(b.n==null?1e9:b.n));
+  }
+  function viewToday(){
+    const it=opsItems(); const now=it.filter(i=>i.lane==="now");
+    const openQ=S.questions.filter(q=>q.status==="open").length;
+    const d=new Date();
+    let h=`<div class="today"><div class="date">${esc(d.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}))}</div>
+      <h2>${now.length? (now.length===1?"One thing needs you today":now.length+" things need you today") : "Nothing needs you today"}</h2>
+      <p class="lede">${now.length? "Everything else is on its own schedule." : "The house is on schedule. A good day to fill in a little more of its history."}</p></div>`;
+
+    if(openQ) h+=`<div class="attention" style="margin-top:24px"><span class="n">${openQ}</span><span class="eyebrow" style="color:var(--accent)">Questions waiting on you</span>
+      <p class="muted" style="margin:6px 0 10px;font-size:14px">Each answer becomes a permanent part of this house's record.</p>
+      <div><button class="btn primary small" data-tab="questions">Answer questions</button></div></div>`;
+
+    const lanes=[["now","Now"],["week","This week"],["month","This month"],["upcoming","Upcoming"],["ongoing","Ongoing"]];
+    h+=`<div class="section" style="margin-top:34px"><div class="section-head"><h3>What needs to happen</h3><span class="eyebrow">Last done → next due</span></div>
+      <div class="lanes">`+lanes.map(([id,l])=>{
+        const li=it.filter(i=>i.lane===id);
+        if(!li.length && (id==="upcoming"||id==="month")) return "";
+        return `<div class="lane ${id==="now"?"now":""}"><div class="lane-head"><span class="l">${l}</span><span class="count">${li.length}</span></div>`+
+          (li.length? li.map(i=>`<div class="item"><span class="t">${esc(i.title)}</span><span class="s">${i.due?`<span class="mono">${esc(fmtD(i.due))}</span>${i.n<0?` · <span class="overdue">${-i.n} days overdue</span>`:""}${i.sub?" · ":""}`:""}${esc(i.sub)}</span></div>`).join("") : `<div class="empty">Nothing here yet</div>`)+`</div>`;
+      }).join("")+`</div></div>`;
+
+    const cov=S.records.filter(r=>r.warrantyEnd||r.kind==="warranty").sort((a,b)=>String(a.warrantyEnd||"9999").localeCompare(String(b.warrantyEnd||"9999")));
+    h+=`<div class="section"><div class="section-head"><h3>Maintenance &amp; warranties</h3><button class="btn ghost small" data-tab="memory" data-cat="warranty">See all</button></div>
+      <div class="lane">`+(cov.length? cov.slice(0,6).map(r=>{
+        const n=r.warrantyEnd?daysUntil(r.warrantyEnd):null;
+        const state=n==null?`<span class="tag">Terms unknown</span>`:n<0?`<span class="tag">Expired</span>`:n<=120?`<span class="tag warn">Ends in ${n} days</span>`:`<span class="tag ok">Covered</span>`;
+        return `<div class="item" style="flex-direction:row;justify-content:space-between;align-items:center;gap:12px"><span><span class="t">${esc(r.title)}</span>${r.warrantyEnd?`<span class="s"> · <span class="mono">${esc(fmtD(r.warrantyEnd))}</span></span>`:""}</span>${state}</div>`;
+      }).join("") : `<div class="empty">No warranties recorded yet</div>`)+`</div></div>`;
+
+    h+=`<div class="section"><div class="section-head"><h3>Tasks</h3><button class="btn small" data-act="new" data-kind="task">Add task</button></div>
+      ${editing&&editing.kind==="task"&&!editing.id?editorCard(editing):""}
+      <div class="records">`+S.records.filter(r=>r.kind==="task").map(recCard).join("")+`</div></div>`;
+    return h;
+  }
+
+  /* ---------- Questions ---------- */
+  function viewQuestions(){
+    const sorted=[...S.questions].sort((a,b)=>(a.order||0)-(b.order||0));
+    const open=sorted.filter(q=>q.status==="open"), done=sorted.filter(q=>q.status!=="open");
+    const bySection={}; open.forEach(q=>{(bySection[q.section||"General"]=bySection[q.section||"General"]||[]).push(q)});
+    let h=`<div class="section"><div class="section-head"><h2>Questions</h2><span class="eyebrow">${open.length} open</span></div>
+      <p class="intro">Answer what you know — rough is fine, and “don’t know” is a useful answer. Attach an invoice, warranty or photo right on the question. Claude files each answer into House Memory and asks the next round as the record fills in.</p></div>`;
+    if(!open.length) h+=`<p class="empty">No open questions right now. Ask Claude in chat for the next round.</p>`;
+    Object.keys(bySection).forEach(sec=>{
+      h+=`<div class="section"><span class="eyebrow">${esc(sec)}</span><div class="qgroup">`+bySection[sec].map(q=>qCard(q)).join("")+`</div></div>`;
+    });
+    if(done.length){
+      h+=`<details class="more" style="margin-top:34px"><summary>Answered (${done.length})</summary><div class="qgroup">`+done.map(q=>`
+        <div class="q done"><div class="q-top"><div class="q-text">${esc(q.q)}</div>${q.status==="filed"?'<span class="tag ok">Filed</span>':q.status==="skipped"?'<span class="tag">Skipped</span>':'<span class="tag acc">With Claude</span>'}</div>
+        ${q.answer?`<div class="q-answer">${esc(q.answer)}</div>`:""}${docChips(q.docs)}
+        ${q.status!=="filed"?`<div class="q-actions"><button class="btn ghost small" data-act="reopen" data-id="${q.id}">Edit answer</button></div>`:""}</div>`).join("")+`</div></details>`;
+    }
+    return h;
+  }
+  function qCard(q){
+    return `<div class="q" data-qid="${q.id}">
+      <div class="q-top"><div class="q-text">${esc(q.q)}</div></div>
+      ${q.why?`<div class="q-why">${esc(q.why)}</div>`:""}
+      <textarea id="ans-${q.id}" aria-label="Your answer" placeholder="Your answer…">${esc(q.draft||q.answer||"")}</textarea>
+      ${docChips(q.docs)}
+      <div class="q-actions">
+        <button class="btn primary small" data-act="answer" data-id="${q.id}">Save answer</button>
+        ${assets?`<label class="btn small" for="qf-${q.id}">Attach file</label><input id="qf-${q.id}" type="file" multiple hidden data-act="qfile" data-id="${q.id}" accept=".pdf,image/*,.txt,.csv,.md">`:""}
+        <button class="btn ghost small" data-act="skip" data-id="${q.id}">Skip for now</button>
+      </div></div>`;
+  }
+  function docChips(ids){
+    if(!ids||!ids.length) return "";
+    return `<div class="rec-docs">`+ids.map(id=>{const d=S.documents.find(x=>x.assetId===id||x.id===id); const aid=d?d.assetId:id;
+      return `<a class="doclink" href="/_blob/${esc(aid)}" target="_blank" rel="noopener">${esc(d?d.name:"Document")}</a>`}).join("")+`</div>`;
+  }
+
+  /* ---------- House Memory ---------- */
+  function viewMemory(){
+    const recs=S.records.filter(r=>r.kind!=="task");
+    const cats=Object.keys(KINDS).filter(k=>k!=="task");
+    let h=`<div class="section"><div class="section-head"><h2>House Memory</h2><span class="eyebrow">What we know about this house</span></div>
+      <p class="intro">The permanent record — systems, improvements, service history, providers and warranties. Grey italic means the detail is still unknown, never a guess.</p>
+      <div class="cats"><button class="chip" data-cat="all" aria-pressed="${memCat==="all"}">Everything<span class="count">${recs.length}</span></button>`+
+      `<button class="chip" data-cat="property" aria-pressed="${memCat==="property"}">Property profile</button>`+
+      cats.map(k=>`<button class="chip" data-cat="${k}" aria-pressed="${memCat===k}">${esc(KINDS[k].label)}<span class="count">${recs.filter(r=>r.kind===k).length}</span></button>`).join("")+`</div></div>`;
+    if(memCat==="property"||memCat==="all") h+=propertyCard();
+    const show = memCat==="all"?cats:(memCat==="property"?[]:[memCat]);
+    show.forEach(k=>{
+      const list=recs.filter(r=>r.kind===k);
+      if(memCat==="all" && !list.length) return;
+      h+=`<div class="section"><div class="section-head"><h3>${esc(KINDS[k].label)}</h3><button class="btn small" data-act="new" data-kind="${k}">Add ${esc(KINDS[k].one.toLowerCase())}</button></div>
+        ${editing&&editing.kind===k&&!editing.id?editorCard(editing):""}
+        <div class="records">${list.length?list.map(recCard).join(""):`<p class="empty">Nothing recorded here yet.</p>`}</div></div>`;
+    });
+    if(memCat==="all") h+=`<div class="section"><span class="eyebrow">Add a record</span><div class="cats">`+cats.map(k=>`<button class="btn small" data-act="new" data-kind="${k}" data-cat-jump="1">${esc(KINDS[k].one)}</button>`).join("")+`</div></div>`;
+    return h;
+  }
+  const PROP_FIELDS=[["address","Address"],["yearBuilt","Year built"],["purchased","Purchased","date"],["sqft","Square feet"],["beds","Bedrooms"],["baths","Bathrooms"],["lot","Lot size"],["notes","Notes","area"]];
+  function propertyCard(){
+    const p=S.property||{};
+    if(editing&&editing.kind==="property") return `<div class="rec"><div class="rec-title">Property profile</div>${formFields(PROP_FIELDS,editing)}<div class="q-actions"><button class="btn primary small" data-act="save">Save</button><button class="btn ghost small" data-act="cancel">Cancel</button></div></div>`;
+    return `<div class="rec"><div class="rec-head"><div class="rec-title">Property profile</div><button class="btn ghost small" data-act="editprop">Edit</button></div>${kv(PROP_FIELDS,p)}</div>`;
+  }
+  function kv(fields,r){
+    return `<dl class="kv">`+fields.map(([k,l,t])=>{const v=r[k]; const has=String(v||"").trim();
+      if(!has && (k==="notes"||k==="claims")) return "";
+      return `<dt>${esc(l)}</dt><dd class="${has?"":"unknown"}">${has?esc(t==="date"?fmtD(v):v):"Unknown"}</dd>`}).join("")+`</dl>`;
+  }
+  function recCard(r){
+    if(editing&&editing.id===r.id) return editorCard(editing);
+    const miss=missingCount(r);
+    let tag="";
+    if(r.kind==="task") tag=`<span class="tag ${r.status==="Done"?"ok":r.priority==="High"?"crit":""}">${esc(r.status||"Open")}</span>`;
+    else if(r.warrantyEnd){ const n=daysUntil(r.warrantyEnd); if(n!=null) tag = n<0?`<span class="tag">Warranty expired</span>`: n<=120?`<span class="tag warn">Warranty ends soon</span>`:`<span class="tag ok">Under warranty</span>`; }
+    else if(r.kind==="contractor"&&r.relationship) tag=`<span class="tag ${r.relationship==="Current provider"?"acc":""}">${esc(r.relationship)}</span>`;
+    return `<div class="rec"><div class="rec-head"><div><span class="eyebrow">${esc(KINDS[r.kind]?KINDS[r.kind].one:r.kind)}</span><div class="rec-title">${esc(r.title)}</div></div>${tag}</div>
+      ${kv(KINDS[r.kind]?KINDS[r.kind].fields:[],r)}${docChips(r.docs)}
+      <div class="rec-foot"><span class="eyebrow">${miss?miss+" still unknown":"complete"}</span><button class="btn ghost small" data-act="edit" data-id="${r.id}">Edit</button></div></div>`;
+  }
+  function formFields(fields,r){
+    return `<div class="editor">`+fields.map(([k,l,t,opts])=>{
+      const id="f-"+k; const v=esc(r[k]||"");
+      if(t==="area") return `<label class="full" for="${id}">${esc(l)}<textarea id="${id}" data-f="${k}">${v}</textarea></label>`;
+      if(t==="select") return `<label for="${id}">${esc(l)}<select id="${id}" data-f="${k}"><option value="">Unknown</option>${opts.map(o=>`<option ${r[k]===o?"selected":""}>${esc(o)}</option>`).join("")}</select></label>`;
+      return `<label for="${id}">${esc(l)}<input id="${id}" data-f="${k}" type="${t==="date"?"date":"text"}" value="${v}"></label>`;
+    }).join("")+`</div>`;
+  }
+  function editorCard(r){
+    const k=KINDS[r.kind];
+    return `<div class="rec" style="grid-column:1/-1"><span class="eyebrow">${r.id?"Edit":"New"} ${esc(k.one.toLowerCase())}</span>
+      <div class="editor"><label class="full" for="f-title">Name<input id="f-title" data-f="title" type="text" value="${esc(r.title||"")}" placeholder="e.g. Upstairs HVAC unit"></label></div>
+      ${formFields(k.fields,r)}
+      <div class="q-actions"><button class="btn primary small" data-act="save">Save</button><button class="btn ghost small" data-act="cancel">Cancel</button>
+      ${r.id?`<button class="btn ghost small" data-act="del" data-id="${r.id}" style="margin-left:auto;color:var(--crit)">Delete record</button>`:""}</div></div>`;
+  }
+
+  /* ---------- Documents ---------- */
+  function viewDocs(){
+    const docs=[...S.documents].sort((a,b)=>String(b.uploadedAt).localeCompare(String(a.uploadedAt)));
+    let h=`<div class="section"><div class="section-head"><h2>Documents</h2><span class="eyebrow">Evidence for the record</span></div>
+      <p class="intro">Invoices, warranties, contracts, manuals, inspection reports, photos. Claude reads each new upload, takes only what the document supports, and links it to the right record.</p></div>`;
+    if(assets){
+      h+=`<div class="drop" id="drop"><strong>Drop files here</strong><span class="muted" style="font-size:14px">PDF, photos, text or CSV — up to 20 MB each. Word or Excel files: upload those in the chat instead.</span>
+        <div class="drop-row"><input type="text" id="docNote" placeholder="Optional: what is this?" aria-label="Note about the upload">
+        <label class="btn primary" for="docInput">Choose files</label><input id="docInput" type="file" multiple hidden accept=".pdf,image/*,.txt,.csv,.md"></div></div>`;
+    } else {
+      h+=`<p class="banner">Uploading here needs edit access to this page. You can always attach files in the chat with Claude instead.</p>`;
+    }
+    h+=`<div class="table-wrap" style="margin-top:18px"><table><thead><tr><th>Document</th><th>What it is</th><th>Linked to</th><th>Uploaded</th><th>Status</th></tr></thead><tbody>`+
+      (docs.length?docs.map(d=>`<tr><td><a href="/_blob/${esc(d.assetId)}" target="_blank" rel="noopener">${esc(d.name)}</a></td><td>${esc(d.note||d.summary||"—")}</td><td>${esc(d.linkedTo||"—")}</td><td class="mono">${esc(d.uploadedAt?new Date(d.uploadedAt).toLocaleDateString():"")}</td><td>${d.status==="filed"?'<span class="tag ok">Filed</span>':'<span class="tag acc">New</span>'}</td></tr>`).join("")
+        :`<tr><td colspan="5"><span class="empty">No documents yet.</span></td></tr>`)+`</tbody></table></div>`;
+    return h;
+  }
+
+  function viewInbox(){
+    const c=[...S.captures].sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));
+    return `<div class="section"><div class="section-head"><h2>Notes</h2><span class="eyebrow">Waiting to be filed</span></div>
+      <p class="intro">Anything you jot in the box at the top lands here. Claude turns each note into the right task, service event or record.</p>
+      <div class="inbox">${c.length?c.map(x=>`<div class="inbox-row"><span>${esc(x.text)}</span><span style="display:flex;gap:10px;align-items:center;flex-shrink:0"><span class="mono muted" style="font-size:12.5px">${esc(new Date(x.createdAt).toLocaleDateString())}</span>${x.status==="filed"?'<span class="tag ok">Filed</span>':'<span class="tag acc">New</span>'}</span></div>`).join(""):`<p class="empty">Nothing waiting.</p>`}</div></div>`;
+  }
+
+  /* ---------- actions ---------- */
+  async function guarded(fn,okMsg){
+    if(busy) return; busy=true;
+    try{ await fn(); if(okMsg) setStatus(okMsg); }
+    catch(e){ console.error(e); const c=e&&e.code;
+      setStatus(c==="invalid_argument"?"You can view this record but not change it.":c==="quota_exceeded"?"The record is full — ask Claude to archive older notes.":c==="too_large"?"That file is over 20 MB. Compress it or upload it in the chat.":c==="unsupported_type"?"That file type can’t be stored here — use PDF or an image, or upload it in the chat.":"Couldn’t save that. Try again in a moment.", true); }
+    finally{ busy=false; }
+  }
+  function collectForm(scope){ const o={}; scope.querySelectorAll("[data-f]").forEach(el=>{o[el.dataset.f]=el.value.trim()}); return o; }
+
+  async function uploadFiles(files, note, questionId){
+    if(!assets||!files.length) return [];
+    const ids=[];
+    for(const f of files){
+      let type=f.type;
+      if(!type){ const ext=(f.name.split(".").pop()||"").toLowerCase(); type={pdf:"application/pdf",jpg:"image/jpeg",jpeg:"image/jpeg",png:"image/png",txt:"text/plain",csv:"text/csv",md:"text/markdown"}[ext]||""; }
+      if(type==="application/vnd.ms-excel"&&/\.csv$/i.test(f.name)) type="text/csv";
+      setStatus("Uploading "+f.name+"…");
+      const res=await assets.upload(f, type?{type}:undefined);
+      const q=questionId?S.questions.find(x=>x.id===questionId):null;
+      await db.collection("documents").doc(res.id).set({name:f.name,assetId:res.id,contentType:res.contentType,sizeBytes:res.sizeBytes,note:note||"",linkedTo:q?("Question: "+q.q):"",questionId:questionId||"",status:"new",uploadedAt:nowISO()});
+      ids.push(res.id);
+    }
+    return ids;
+  }
+
+  document.addEventListener("click", e=>{
+    const t=e.target.closest("[data-tab],[data-cat],[data-act]"); if(!t) return;
+    if(t.dataset.tab){ tab=t.dataset.tab; if(t.dataset.cat){ memCat=t.dataset.cat; try{localStorage.setItem("hr.cat",memCat)}catch(_){ } } editing=null; try{localStorage.setItem("hr.tab2",tab)}catch(_){ } window.scrollTo({top:0,behavior:"smooth"}); render(); return; }
+    if(t.dataset.cat && !t.dataset.act){ memCat=t.dataset.cat; editing=null; try{localStorage.setItem("hr.cat",memCat)}catch(_){ } render(); return; }
+    const act=t.dataset.act, id=t.dataset.id;
+    if(act==="qfile") return;
+    if(act==="answer"){ const ta=document.getElementById("ans-"+id); const ans=ta?ta.value.trim():"";
+      if(!ans){ setStatus("Type an answer first — even “don’t know” helps.",true); return; }
+      guarded(()=>db.doc("questions/"+id).update({answer:ans,status:"answered",answeredAt:nowISO()}),"Saved. Claude will file it."); ta.blur(); return; }
+    if(act==="skip"){ guarded(()=>db.doc("questions/"+id).update({status:"skipped"}),"Skipped — you can reopen it any time."); return; }
+    if(act==="reopen"){ guarded(()=>db.doc("questions/"+id).update({status:"open"})); return; }
+    if(act==="new"){ if(t.dataset.catJump){ memCat=t.dataset.kind; } editing={kind:t.dataset.kind}; render(); const f=document.getElementById("f-title"); if(f) f.focus(); return; }
+    if(act==="edit"){ const r=S.records.find(x=>x.id===id); if(r){ editing={...r}; render(); } return; }
+    if(act==="editprop"){ editing={kind:"property",...(S.property||{})}; render(); return; }
+    if(act==="cancel"){ editing=null; document.activeElement&&document.activeElement.blur(); render(); return; }
+    if(act==="save"){ const scope=t.closest(".rec"); const data=collectForm(scope); const cur=editing;
+      if(cur.kind==="property"){ guarded(async()=>{ await db.doc("property/profile").set({...(S.property||{}),...data,updatedAt:nowISO()}); editing=null; },"Property profile saved."); return; }
+      if(!data.title){ setStatus("Give it a name first.",true); return; }
+      guarded(async()=>{
+        if(cur.id){ await db.doc("records/"+cur.id).update({...data,updatedAt:nowISO()}); }
+        else { await db.collection("records").add({kind:cur.kind,docs:[],...data,createdAt:nowISO(),updatedAt:nowISO(),source:"page"}); }
+        editing=null; document.activeElement&&document.activeElement.blur();
+      },"Saved to House Memory."); return; }
+    if(act==="del"){ if(!confirmDel(t)) return; guarded(async()=>{ await db.doc("records/"+id).delete(); editing=null; },"Record deleted."); return; }
+  });
+  function confirmDel(btn){ if(btn.dataset.armed){ return true; } btn.dataset.armed="1"; btn.textContent="Click again to delete"; setTimeout(()=>{ if(btn.isConnected){ delete btn.dataset.armed; btn.textContent="Delete record"; } },4000); return false; }
+
+  document.addEventListener("input", e=>{ const t=e.target; if(t.id&&t.id.startsWith("ans-")){ const q=S.questions.find(x=>"ans-"+x.id===t.id); if(q) q.draft=t.value; } });
+
+  document.addEventListener("change", e=>{
+    const t=e.target;
+    if(t.dataset&&t.dataset.act==="qfile"){ const files=[...t.files]; const qid=t.dataset.id;
+      guarded(async()=>{ const ids=await uploadFiles(files,"",qid); const q=S.questions.find(x=>x.id===qid);
+        await db.doc("questions/"+qid).update({docs:[...(q&&q.docs||[]),...ids]}); },"Attached."); t.value=""; }
+    if(t.id==="docInput"){ const files=[...t.files]; const note=($("#docNote")||{}).value||"";
+      guarded(async()=>{ await uploadFiles(files,note.trim(),""); const n=$("#docNote"); if(n) n.value=""; },files.length>1?"Files uploaded.":"File uploaded."); t.value=""; }
+  });
+  document.addEventListener("dragover", e=>{ const d=e.target.closest&&e.target.closest("#drop"); if(d){ e.preventDefault(); d.classList.add("over"); } });
+  document.addEventListener("dragleave", e=>{ const d=e.target.closest&&e.target.closest("#drop"); if(d) d.classList.remove("over"); });
+  document.addEventListener("drop", e=>{ const d=e.target.closest&&e.target.closest("#drop"); if(!d) return; e.preventDefault(); d.classList.remove("over");
+    const files=[...e.dataTransfer.files]; const note=($("#docNote")||{}).value||"";
+    guarded(async()=>{ await uploadFiles(files,note.trim(),""); },"Uploaded."); });
+
+  $("#captureForm").addEventListener("submit", e=>{ e.preventDefault(); const inp=$("#captureInput"); const text=inp.value.trim(); if(!text||!db) return;
+    guarded(async()=>{ await db.collection("captures").add({text,status:"new",createdAt:nowISO()}); inp.value=""; },"Noted. It’s in Notes for Claude to file."); });
+
+  /* ---------- boot ---------- */
+  render();
+  (async()=>{
+    try{ db = await window.claude.use("db"); }catch(e){ db=null; }
+    if(!db){ S.ready=true; $("#banner").hidden=false; $("#banner").textContent="The house record couldn’t load in this view. Open it from claude.ai while signed in."; render(); return; }
+    try{ assets = await window.claude.use("assets"); }catch(e){ assets=null; }
+    const seen=new Set(); const done=(n)=>{ seen.add(n); if(seen.size>=4){ S.ready=true; } render(); };
+    const onErr=e=>{ console.error(e); setStatus("Live updates paused — reload to reconnect.",true); };
+    db.collection("questions").onSnapshot(s=>{ const drafts={}; S.questions.forEach(q=>{ if(q.draft!=null) drafts[q.id]=q.draft; });
+      S.questions=s.docs.map(d=>({id:d.id,...d.data(),draft:drafts[d.id]})); done('q'); },onErr);
+    db.collection("records").onSnapshot(s=>{ S.records=s.docs.map(d=>({id:d.id,...d.data()})); done('r'); },onErr);
+    db.collection("documents").onSnapshot(s=>{ S.documents=s.docs.map(d=>({id:d.id,...d.data()})); done('d'); },onErr);
+    db.collection("captures").onSnapshot(s=>{ S.captures=s.docs.map(d=>({id:d.id,...d.data()})); done('c'); },onErr);
+    db.doc("property/profile").onSnapshot(s=>{ S.property=s.exists?s.data():null; render(); },onErr);
+  })();
+})();
+</script>

@@ -1,0 +1,137 @@
+{
+  "q01": {
+    "order": 1,
+    "section": "The property",
+    "q": "What's the full address of the house, and roughly when did you buy it?",
+    "why": "Anchors the whole record and the future buyer handoff package."
+  },
+  "q02": {
+    "order": 2,
+    "section": "The property",
+    "q": "Year built, square footage, bedrooms and bathrooms \u2014 whatever you know offhand.",
+    "why": "Rough is fine. If you have the listing sheet, attach it instead."
+  },
+  "q03": {
+    "order": 3,
+    "section": "The property",
+    "q": "Do you have the home inspection report or closing documents from the purchase? If so, attach them.",
+    "why": "These usually list the age of the roof, HVAC and water heater \u2014 they can answer a dozen questions at once."
+  },
+  "q04": {
+    "order": 4,
+    "section": "Major systems",
+    "q": "HVAC: how many units, what brand, roughly how old, and who services them?",
+    "why": "A photo of each unit's data plate \u2014 on the furnace and the outdoor condenser \u2014 gives the model and serial numbers."
+  },
+  "q05": {
+    "order": 5,
+    "section": "Major systems",
+    "q": "When was the HVAC last serviced, and do you have a maintenance plan with anyone?",
+    "why": "Sets the last-done to next-due clock for the seasonal tune-ups."
+  },
+  "q06": {
+    "order": 6,
+    "section": "Major systems",
+    "q": "Water heater: tank or tankless, gas or electric, and roughly how old?",
+    "why": "A data-plate photo works here too."
+  },
+  "q07": {
+    "order": 7,
+    "section": "Major systems",
+    "q": "Roof: how old is it, and when was it last replaced or repaired?",
+    "why": "One of the first things a buyer asks about."
+  },
+  "q08": {
+    "order": 8,
+    "section": "Major systems",
+    "q": "Have the windows or exterior doors been replaced? If so, when, by whom, and what did it cost?",
+    "why": "Attach the contract or warranty certificate if you have it \u2014 only what the paperwork says gets recorded."
+  },
+  "q09": {
+    "order": 9,
+    "section": "Major systems",
+    "q": "Garage doors and openers: brand, roughly how old, and have they been replaced?",
+    "why": "Openers and doors carry separate warranties, so both are worth recording."
+  },
+  "q10": {
+    "order": 10,
+    "section": "Major systems",
+    "q": "Where are the main water shutoff, the gas shutoff and the electrical panel?",
+    "why": "Property knowledge a house sitter, contractor or future owner needs in a hurry."
+  },
+  "q11": {
+    "order": 11,
+    "section": "Major systems",
+    "q": "Anything unusual about the plumbing or electrical \u2014 old pipes, a subpanel, a generator, known quirks?",
+    "why": "Lessons learned from past repairs belong in the record, not in your head."
+  },
+  "q12": {
+    "order": 12,
+    "section": "Major systems",
+    "q": "Who services the pool, and what does that cost? When was the equipment last serviced or replaced?",
+    "why": "Pump, heater and filter each have their own age and warranty.",
+    "when": "pool"
+  },
+  "q13": {
+    "order": 13,
+    "section": "Major systems",
+    "q": "Who handles the irrigation system, and when is it started up and winterized?",
+    "why": "Start-up and blowout are seasonal dates worth putting on the clock.",
+    "when": "irrigation"
+  },
+  "q14": {
+    "order": 14,
+    "section": "Major systems",
+    "q": "Septic or well: who services it, how often, and when was it last pumped or tested?",
+    "why": "Both run on strict intervals that are easy to lose track of.",
+    "when": "septic"
+  },
+  "q15": {
+    "order": 15,
+    "section": "People who work on the house",
+    "q": "Who is your cleaning person \u2014 name, phone, which days they come, and what you pay?",
+    "why": "Sets up the weekly cleaning priorities list and the payment record."
+  },
+  "q16": {
+    "order": 16,
+    "section": "People who work on the house",
+    "q": "Who handles lawn and landscaping, and pest control? Company, contact, how often, and cost.",
+    "why": "Recurring providers go in the directory with their payment schedule."
+  },
+  "q17": {
+    "order": 17,
+    "section": "People who work on the house",
+    "q": "Any other go-to people \u2014 plumber, electrician, handyman, HVAC company, painter? Include anyone you've used before, even if you've switched.",
+    "why": "Former providers stay in the record with the work they did."
+  },
+  "q18": {
+    "order": 18,
+    "section": "Appliances & finishes",
+    "q": "Kitchen and laundry appliances: brands and roughly when purchased? Photos of the model and serial stickers are perfect.",
+    "why": "Fridge, range, dishwasher, microwave, washer, dryer."
+  },
+  "q19": {
+    "order": 19,
+    "section": "Appliances & finishes",
+    "q": "Do you know the paint colors \u2014 brand and color name \u2014 for the main rooms and the exterior?",
+    "why": "Saves a paint-store guessing game at touch-up time and goes in the sale package."
+  },
+  "q20": {
+    "order": 20,
+    "section": "Appliances & finishes",
+    "q": "Flooring: what's where, and when was any of it installed or replaced?",
+    "why": "Affects cleaning as well as the record."
+  },
+  "q21": {
+    "order": 21,
+    "section": "Right now",
+    "q": "Is anything broken, overdue, or bugging you about the house right now?",
+    "why": "Becomes the first entries in what needs to happen."
+  },
+  "q22": {
+    "order": 22,
+    "section": "Right now",
+    "q": "Anything planned in the next year \u2014 a project, a replacement you know is coming, a room you want redone?",
+    "why": "Projects get tracked from idea through completion."
+  }
+}
